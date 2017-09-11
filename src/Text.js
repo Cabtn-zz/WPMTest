@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./Text.css"
-
+//Needs more styling
 export default class TextComponent extends Component {
 
     blob = "And what of the Rebellion? If the Rebels have obtained a complete technical " + 
@@ -13,11 +13,12 @@ export default class TextComponent extends Component {
             currentInput: "",
             count: 0,
             matches: 0,
+            //need to use this state to end the game and display score
             end: false,
         }       
     }
     compareKeyPress (e, str){
-        console.log(e)
+        //Need to look into passing state into time out function
         if(e === str[0]){
             setTimeout(function()
             {
@@ -25,7 +26,6 @@ export default class TextComponent extends Component {
             }, 5000)
         }
         if(e === str[this.state.count]){
-            console.log("MATCH")
             const count = this.state.count + 1
             this.setState(
             { 
@@ -37,7 +37,6 @@ export default class TextComponent extends Component {
     }
 
     backSpace(e){
-        console.log(e);
         if(e === 8){
             const count = this.state.count - 1;
             this.setState(
@@ -51,8 +50,6 @@ export default class TextComponent extends Component {
     highlightBlob(){
         let str = this.blob.substr(0, this.state.count);
         let backHalf = this.blob.substr(this.state.count);
-        console.log("WELL",str);
-        console.log("END", backHalf);
         return (
          <div>
             <span className="highliteGreen"> {str} </span>
