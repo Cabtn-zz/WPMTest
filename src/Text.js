@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "./Text.css"
 //Needs more styling
+//Create a separate component for Text/Blob?
 export default class TextComponent extends Component {
 
     blob = "And what of the Rebellion? If the Rebels have obtained a complete technical " + 
@@ -13,6 +14,7 @@ export default class TextComponent extends Component {
             currentInput: "",
             count: 0,
             matches: 0,
+            wordsCompleted: 0,
             //need to use this state to end the game and display score
             end: false,
         }       
@@ -20,15 +22,19 @@ export default class TextComponent extends Component {
     compareKeyPress (e, str){
         //Need to look into passing state into time out function
         if(e === str[0]){
-            setTimeout(function()
-            {
+            setTimeout(function(){
                 alert(`TIMES UP!`); 
             }, 5000)
         }
         if(e === str[this.state.count]){
+            if(e === " "){
+                const words = this.state.wordsCompleted + 1
+                this.setState({
+                    wordsCompleted: words,
+                })
+            }
             const count = this.state.count + 1
-            this.setState(
-            { 
+            this.setState({ 
                 currentInput: "",
                 count: count,
                 matches: this.state.matches + 1
@@ -39,8 +45,7 @@ export default class TextComponent extends Component {
     backSpace(e){
         if(e === 8){
             const count = this.state.count - 1;
-            this.setState(
-                {
+            this.setState({
                     count: count,
                 }
             )
@@ -60,9 +65,11 @@ export default class TextComponent extends Component {
     render() {
         return (
             <div>
-                <div>
+                <div className="renderedStats">
                     {this.highlightBlob()}
                     Matches:{" " + this.state.matches}
+                    <br/>
+                    Words Completed: {" " + this.state.wordsCompleted}
                 </div>
                 <input 
                 type='text' 
