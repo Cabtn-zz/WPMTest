@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import "./Text.css"
-//Needs more styling
-//Create a separate component for Text/Blob?
 export default class TextComponent extends Component {
 
-    blob = "And what of the Rebellion? If the Rebels have obtained a complete technical " + 
-    "readout of this station, it is possible, however unlikely, that they might " +
-    "find a weakness and exploit it.";
+    blob = "He is here... Obi-Wan Kenobi! What makes you think so? A tremor in the Force.  " + 
+    "The last time I felt it was in the presence of my old master. Surely he must be dead by now. " +
+    "Don't underestimate the power of the Force. The Jedi are extinct, their fire has gone out of the universe.." +
+    "You, my friend, are all that's left of their religion. Yes. Governor Tarkin, we have an emergency alert in detention block A A-twenty-three." +
+    "The princess! Put all sections on alert!";
+
+    words = this.blob.split(' ');
 
     constructor(props){
         super(props);
@@ -15,7 +17,7 @@ export default class TextComponent extends Component {
             count: 0,
             matches: 0,
             wordsCompleted: 0,
-            //need to use this state to end the game and display score
+            curWord: "",
             end: false,
         }       
     }
@@ -27,26 +29,32 @@ export default class TextComponent extends Component {
             }, 5000)
         }
         if(e === str[this.state.count]){
-            if(e === " "){
-                const words = this.state.wordsCompleted + 1
+            let current = this.state.curWord + e;
+            if(e === " " && this.state.curWord === this.words[0]){
+                const wpm = this.state.wordsCompleted + 1
+                this.words.splice(0,1);
+                current = ""
                 this.setState({
-                    wordsCompleted: words,
+                    wordsCompleted: wpm,
+                    curWord: current,
                 })
             }
+            //Need to fix the way matches are registered
             const count = this.state.count + 1
             this.setState({ 
                 currentInput: "",
                 count: count,
-                matches: this.state.matches + 1
+                matches: this.state.matches + 1,
+                curWord: current,
             })
         }
     }
 
     backSpace(e){
         if(e === 8){
-            const count = this.state.count - 1;
+            const decrement = this.state.count - 1;
             this.setState({
-                    count: count,
+                    count: decrement,
                 }
             )
         }
