@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "./Text.css"
 export default class TextComponent extends Component {
 
-    blob = "He is here... Obi-Wan Kenobi! What makes you think so? A tremor in the Force.  " + 
+    blob = "He is here. Obi-Wan Kenobi! What makes you think so? A tremor in the Force.  " + 
     "The last time I felt it was in the presence of my old master. Surely he must be dead by now. " +
     "Don't underestimate the power of the Force. The Jedi are extinct, their fire has gone out of the universe.." +
     "You, my friend, are all that's left of their religion. Yes. Governor Tarkin, we have an emergency alert in detention block A A-twenty-three." +
@@ -18,6 +18,7 @@ export default class TextComponent extends Component {
             matches: 0,
             wordsCompleted: 0,
             curWord: "",
+            mistakes: 0,
             end: false,
         }       
     }
@@ -26,13 +27,13 @@ export default class TextComponent extends Component {
         if(e === str[0]){
             setTimeout(function(){
                 alert(`TIMES UP!`); 
-            }, 5000)
+            }, 60000)
         }
         if(e === str[this.state.count]){
             let current = this.state.curWord + e;
-            if(e === " " && this.state.curWord === this.words[0]){
+            if(e === " " && this.state.curWord === this.words[this.state.wordsCompleted]){
                 const wpm = this.state.wordsCompleted + 1
-                this.words.splice(0,1);
+                // this.words.splice(0,1);
                 current = ""
                 this.setState({
                     wordsCompleted: wpm,
@@ -48,16 +49,21 @@ export default class TextComponent extends Component {
                 curWord: current,
             })
         }
+        else{
+            this.setState({
+                mistakes: this.state.mistakes + 1,
+            })
+        }
     }
 
     backSpace(e){
-        if(e === 8){
-            const decrement = this.state.count - 1;
-            this.setState({
-                    count: decrement,
-                }
-            )
-        }
+        // if(e === 8){
+        //     const decrement = this.state.count - 1;
+        //     this.setState({
+        //             count: decrement,
+        //         }
+        //     )
+        // }
     }
 
     highlightBlob(){
@@ -70,6 +76,7 @@ export default class TextComponent extends Component {
         </div>
             )
     }
+
     render() {
         return (
             <div>
@@ -77,7 +84,9 @@ export default class TextComponent extends Component {
                     {this.highlightBlob()}
                     Matches:{" " + this.state.matches}
                     <br/>
-                    Words Completed: {" " + this.state.wordsCompleted}
+                    WPM: {" " + this.state.wordsCompleted}
+                    <br/>
+                    Mistakes: {" " + this.state.mistakes}
                 </div>
                 <input 
                 type='text' 
